@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Category</title>
+    <link rel="stylesheet" href="/css/list.css">
+</head>
+<body>
+<h1><span class="blue">&lt;</span><span class="blue">&gt;</span> <span class="yellow">CATEGORY</span></h1>
+
+
+<table class="container">
+    <thead>
+    <tr>
+        <th><h1>image</h1></th>
+        <th><h1>title</h1></th>
+        <th><h1>price</h1></th>
+        <th><h1>description</h1></th>
+        <th><h1>createdAd</h1></th>
+        <th><h1>User</h1></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${products}">
+        <td><img th:src="@{/getImage(imageName=${product.pictureName})}"></td>
+        <td th:text="${product.title}"></td>
+        <td th:text="${product.price}"></td>
+        <td th:text="${product.description}"></td>
+        <td th:text="${product.createdAt}"></td>
+        <td th:text="${product.user.name + ' ' +product.user.surname}"></td>
+        <td>
+            <a th:href="@{/product/delete(id=${product.id})}">DELETE</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<h1>Add Category</h1>
+<form action="/admin/createProduct" method="post" enctype="multipart/form-data">
+    <input type="text" name="title">
+    <input type="number" name="price">
+    <input type="text" name="description">
+    <input type="file" name="image">
+    <select name="category.id">
+        <option th:each="category : ${categories}" th:text="category.name" th:value="${category.id}">
+        </option>
+    </select>
+    <input type="hidden" name="user.id" th:value="${currentUser.id}">
+    <button type="submit">Add Product</button>
+</form>
+</body>
+</html>
